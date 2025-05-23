@@ -2,9 +2,34 @@
 # Прерывать выполнение скрипта при любой ошибке
 set -e
 
-# Обновление системы
-echo "Обновление системы..."
-sudo apt update && sudo apt upgrade -y
+# По умолчанию НЕ обновляем систему
+PERFORM_UPDATE=false
+
+# Обработка опций командной строки
+while getopts ":u" opt; do
+  case $opt in
+    u)
+      # Если указан флаг -u, ОБНОВЛЯЕМ систему
+      echo "Флаг -u указан. Система будет обновлена."
+      PERFORM_UPDATE=true
+      ;;
+    \?)
+      echo "Неверная опция: -$OPTARG" >&2
+      # Можно добавить здесь вывод справки и exit 1, если нужно
+      ;;
+  esac
+done
+
+# Сдвигаем обработанные опции, чтобы $* или $@ ссылались на оставшиеся аргументы (если они есть)
+shift "$((OPTIND-1))"
+
+# Обновление системы (если PERFORM_UPDATE=true)
+if [ "$PERFORM_UPDATE" = true ]; then
+  echo "Обновление системы..."
+  sudo apt update && sudo apt upgrade -y
+else
+  echo "Пропуск обновления системы (для обновления используйте флаг -u)."
+fi
 
 # Установка необходимых пакетов
 echo "Установка базовых пакетов (zsh, git, curl, wget, fonts-powerline, unzip, snapd)..."
