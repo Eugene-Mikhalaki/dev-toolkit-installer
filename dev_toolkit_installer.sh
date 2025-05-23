@@ -126,8 +126,8 @@ echo "Установка yazi (файловый менеджер)..."
 
 SNAP_YAZI_INSTALLED=false
 if command -v snap &> /dev/null; then
-    echo "Команда 'snap' доступна. Проверка состояния snapd..."
-    if sudo snap list &> /dev/null; then
+    echo "Команда 'snap' доступна. Проверка состояния snapd (таймаут 10 секунд)..."
+    if timeout 10 sudo snap list &> /dev/null; then
         echo "snapd активен. Попытка установки yazi через snap..."
         sudo snap install yazi --classic
         if [ $? -eq 0 ]; then
