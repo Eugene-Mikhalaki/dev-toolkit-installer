@@ -7,8 +7,8 @@ echo "Обновление системы..."
 sudo apt update && sudo apt upgrade -y
 
 # Установка необходимых пакетов
-echo "Установка базовых пакетов (zsh, git, curl, wget, fonts-powerline)..."
-sudo apt install -y zsh git curl wget fonts-powerline
+echo "Установка базовых пакетов (zsh, git, curl, wget, fonts-powerline, unzip, snapd)..."
+sudo apt install -y zsh git curl wget fonts-powerline unzip snapd
 
 # Установка шрифтов Nerd Fonts (MesloLGS NF - рекомендован для Powerlevel10k)
 echo "Установка шрифтов MesloLGS Nerd Font..."
@@ -102,7 +102,31 @@ rm lazydocker_latest_Linux_x86_64.tar.gz
 # Установка yazi (терминальный файловый менеджер)
 # Использование: yazi
 echo "Установка yazi (файловый менеджер)..."
-sudo snap install yazi --classic
+
+# snapd должен был быть установлен на предыдущем шаге 'sudo apt install ... snapd'
+if command -v snap &> /dev/null; then
+    echo "Команда 'snap' доступна. Попытка установки yazi через snap..."
+    # Иногда snap-демону нужно время или ядро должно быть обновлено для работы AppArmor/Seccomp.
+    # Простая проверка, отвечает ли демон.
+    if sudo snap list &> /dev/null; then
+        sudo snap install yazi --classic
+        if [ $? -ne 0 ]; then
+            echo "Ошибка во время 'sudo snap install yazi --classic'."
+            echo "Возможно, snapd требует дополнительной настройки или перезапуска системы/сервиса."
+            echo "Вы можете попробовать выполнить 'sudo systemctl restart snapd' или перезагрузить систему."
+        else
+            echo "yazi успешно установлен через snap."
+        fi
+    else
+        echo "Ошибка: команда 'snap' доступна, но 'snap list' не работает (демон snapd может быть не активен)."
+        echo "Попробуйте активировать сервисы snapd (например, 'sudo systemctl start snapd.service snapd.socket') и запустить установку yazi вручную: sudo snap install yazi --classic"
+        echo "Установка yazi через snap будет пропущена."
+    fi
+else
+    echo "Ошибка: команда 'snap' не доступна даже после попытки установки snapd пакета."
+    echo "Установка yazi через snap будет пропущена."
+    echo "Проверьте логи установки snapd и убедитесь, что snapd корректно установлен и запущен."
+fi
 
 
 echo ""
