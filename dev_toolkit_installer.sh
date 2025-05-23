@@ -22,23 +22,39 @@ cd - > /dev/null # Возвращаемся в предыдущую директ
 fc-cache -f -v # Обновляем кэш шрифтов
 
 # Установка Oh My Zsh
-if [ -d "$HOME/.oh-my-zsh" ]; then
-    echo "Oh My Zsh уже установлен в $HOME/.oh-my-zsh. Пропускаем установку."
-    # Можно добавить здесь `git -C $HOME/.oh-my-zsh pull` для обновления, если нужно
-else
-    echo "Установка Oh My Zsh..."
-    # Устанавливаем без интерактивного запроса на смену оболочки, сделаем это позже явно
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-fi
+echo "Попытка установки/обновления Oh My Zsh..."
+# Устанавливаем без интерактивного запроса на смену оболочки, сделаем это позже явно.
+# Добавляем '|| true', чтобы команда не прерывала скрипт из-за 'set -e',
+# если Oh My Zsh уже установлен (в этом случае его установщик выходит с ошибкой).
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended || true
 
 # Установка темы Powerlevel10k для Oh My Zsh
-echo "Установка темы Powerlevel10k..."
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+# Эта команда должна быть безопасной для повторного запуска, т.к. git clone не будет работать, если директория существует и является репозиторием.
+# Для большей надежности можно добавить проверку или `rm -rf` перед клонированием, если нужна всегда свежая копия.
+if [ -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]; then
+    echo "Тема Powerlevel10k уже скачана. Пропускаем."
+else
+    echo "Установка темы Powerlevel10k..."
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+fi
 
 # Установка полезных плагинов для zsh
-echo "Установка плагинов zsh-autosuggestions и zsh-syntax-highlighting..."
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# Аналогично, можно добавить проверки или удаление перед клонированием для идемпотентности.
+ZSH_CUSTOM_PLUGINS_DIR=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins
+
+if [ -d "$ZSH_CUSTOM_PLUGINS_DIR/zsh-autosuggestions" ]; then
+    echo "Плагин zsh-autosuggestions уже скачан. Пропускаем."
+else
+    echo "Установка плагина zsh-autosuggestions..."
+    git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM_PLUGINS_DIR/zsh-autosuggestions
+fi
+
+if [ -d "$ZSH_CUSTOM_PLUGINS_DIR/zsh-syntax-highlighting" ]; then
+    echo "Плагин zsh-syntax-highlighting уже скачан. Пропускаем."
+else
+    echo "Установка плагина zsh-syntax-highlighting..."
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM_PLUGINS_DIR/zsh-syntax-highlighting
+fi
 
 # Конфигурация ~/.zshrc
 echo "Конфигурация ~/.zshrc..."
