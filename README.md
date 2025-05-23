@@ -4,7 +4,6 @@ This script automates the setup of a comprehensive toolkit for backend developer
 
 ## Features
 
-*   Updates the system and installs essential packages.
 *   Installs and configures Zsh with Oh My Zsh and the Powerlevel10k theme for an enhanced terminal experience.
 *   Includes useful Zsh plugins:
     *   `zsh-autosuggestions`: Provides command suggestions as you type.
@@ -14,22 +13,60 @@ This script automates the setup of a comprehensive toolkit for backend developer
     *   `bat`: A `cat` clone with syntax highlighting and Git integration.
     *   `lazydocker`: A terminal UI for Docker to manage containers and services.
     *   `yazi`: A fast terminal file manager with prefetching and preview capabilities.
+*   Optionally updates the system (`sudo apt update && sudo apt upgrade -y`) if the `-u` flag is provided.
 
-## Quick Start
+## Quick Start & Usage
 
-To download and run the installer script, open your terminal and execute the following command:
+To download and run the installer script, open your terminal and use one of the following commands:
+
+**Default (No System Update):**
+
+This will run the script étapes without performing a system-wide update (`apt update && apt upgrade`).
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Eugene-Mikhalaki/dev-toolkit-installer/main/dev_toolkit_installer.sh)"
 ```
 
-### How to use the command:
+**With System Update (`-u` flag):**
+
+This will first perform a system update and then proceed with the rest of the installation.
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Eugene-Mikhalaki/dev-toolkit-installer/main/dev_toolkit_installer.sh)" "" -u
+```
+
+Alternatively, if you prefer to download the script first:
+
+1.  Download the script:
+    ```bash
+    curl -fsSLO https://raw.githubusercontent.com/Eugene-Mikhalaki/dev-toolkit-installer/main/dev_toolkit_installer.sh
+    ```
+2.  Make it executable (optional, as you can run it with `bash script_name`):
+    ```bash
+    chmod +x dev_toolkit_installer.sh
+    ```
+3.  Run it:
+    *   Without system update:
+        ```bash
+        ./dev_toolkit_installer.sh
+        # or
+        # bash dev_toolkit_installer.sh
+        ```
+    *   With system update:
+        ```bash
+        ./dev_toolkit_installer.sh -u
+        # or
+        # bash dev_toolkit_installer.sh -u
+        ```
+
+### How to use the commands:
 
 1.  **Open your terminal:** Access the command line interface on your Ubuntu system.
-2.  **Copy the command:** Select and copy the entire command line provided above.
-3.  **Paste and execute:** Paste the copied command into your terminal and press Enter.
-4.  **Follow prompts:** The script will run automatically. It may ask for your user password at certain points (e.g., for `sudo` commands like installing packages or changing the default shell).
-5.  **Post-installation:**
+2.  **Choose your command:** Select one of the commands above based on whether you want to perform a system update.
+3.  **Copy the command:** Select and copy the entire command line.
+4.  **Paste and execute:** Paste the copied command into your terminal and press Enter.
+5.  **Follow prompts:** The script will run automatically. It may ask for your user password at certain points (e.g., for `sudo` commands like installing packages or changing the default shell).
+6.  **Post-installation:**
     *   Restart your terminal or run `exec zsh` for the changes to take effect.
     *   If `Powerlevel10k` configuration wizard (`p10k configure`) doesn't start automatically on the first Zsh launch, you can run it manually with the command: `p10k configure`.
     *   Ensure your terminal emulator is configured to use the "MesloLGS NF" font for correct icon and prompt display.
