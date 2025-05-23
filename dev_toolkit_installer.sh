@@ -152,7 +152,7 @@ if [ "$SNAP_YAZI_INSTALLED" = false ]; then
         echo "Установка yazi будет пропущена."
     else
         YAZI_LATEST_URL=$(curl -s https://api.github.com/repos/sxyazi/yazi/releases/latest | \
-                           grep "browser_download_url.*yazi-x86_64-unknown-linux-gnu.zip" | \
+                           grep "browser_download_url.*yazi-x86_64-unknown-linux-musl.zip" | \
                            cut -d : -f 2,3 | \
                            tr -d '\"' | \
                            head -n 1)
