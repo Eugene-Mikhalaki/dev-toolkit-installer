@@ -22,9 +22,14 @@ cd - > /dev/null # Возвращаемся в предыдущую директ
 fc-cache -f -v # Обновляем кэш шрифтов
 
 # Установка Oh My Zsh
-echo "Установка Oh My Zsh..."
-# Устанавливаем без интерактивного запроса на смену оболочки, сделаем это позже явно
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+if [ -d "$HOME/.oh-my-zsh" ]; then
+    echo "Oh My Zsh уже установлен в $HOME/.oh-my-zsh. Пропускаем установку."
+    # Можно добавить здесь `git -C $HOME/.oh-my-zsh pull` для обновления, если нужно
+else
+    echo "Установка Oh My Zsh..."
+    # Устанавливаем без интерактивного запроса на смену оболочки, сделаем это позже явно
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
 
 # Установка темы Powerlevel10k для Oh My Zsh
 echo "Установка темы Powerlevel10k..."
