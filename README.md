@@ -10,14 +10,14 @@ This script automates the setup of a comprehensive toolkit for backend developer
     *   `zsh-syntax-highlighting`: Enables syntax highlighting for commands in the terminal.
 *   Installs Nerd Fonts (MesloLGS NF) for proper Powerlevel10k rendering.
 *   Installs handy utilities:
-    *   `bat`: A `cat` clone with syntax highlighting and Git integration.
-    *   `lazydocker`: A terminal UI for Docker to manage containers and services.
-    *   `yazi`: A fast terminal file manager with prefetching and preview capabilities.
-    *   `htop`: Interactive process viewer.
-    *   `btop`: Modern and feature-rich system resource monitor.
-    *   `glances`: System-wide monitoring tool with a comprehensive overview.
-    *   `mtr-tiny`: Network diagnostic tool combining `ping` and `traceroute`.
-    *   `fzf`: Command-line fuzzy finder for interactive filtering.
+    *   [`bat`](https://github.com/sharkdp/bat): A `cat` clone with syntax highlighting and Git integration.
+    *   [`lazydocker`](https://github.com/jesseduffield/lazydocker): A terminal UI for Docker to manage containers and services.
+    *   [`yazi`](https://github.com/sxyazi/yazi): A fast terminal file manager with prefetching and preview capabilities.
+    *   [`htop`](https://htop.dev/): Interactive process viewer.
+    *   [`btop`](https://github.com/aristocratos/btop): Modern and feature-rich system resource monitor.
+    *   [`glances`](https://nicolargo.github.io/glances/): System-wide monitoring tool with a comprehensive overview.
+    *   [`mtr`](https://www.bitwizard.nl/mtr/): Network diagnostic tool (script installs `mtr-tiny`).
+    *   [`fzf`](https://github.com/junegunn/fzf): Command-line fuzzy finder for interactive filtering.
 *   Optionally updates the system (`sudo apt update && sudo apt upgrade -y`) if the `-u` flag is provided.
 
 ## Quick Start & Usage
