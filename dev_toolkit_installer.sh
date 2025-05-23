@@ -160,9 +160,22 @@ if [ "$SNAP_YAZI_INSTALLED" = false ]; then
         if [ -z "$YAZI_LATEST_URL" ]; then
             echo "Не удалось найти URL для загрузки бинарника yazi. Установка yazi будет пропущена."
         else
+            echo "DEBUG: YAZI_LATEST_URL = '$YAZI_LATEST_URL'"
             echo "Загрузка yazi с URL: $YAZI_LATEST_URL"
+            # Убираем -q для отладки, если wget не показывает прогресс или завершается слишком быстро
+            # wget --show-progress "$YAZI_LATEST_URL" -O yazi.zip 
             wget -q --show-progress "$YAZI_LATEST_URL" -O yazi.zip
-            if [ $? -eq 0 ]; then
+            WGET_EXIT_CODE=$?
+            if [ $WGET_EXIT_CODE -ne 0 ]; then
+                echo "Ошибка wget: команда завершилась с кодом $WGET_EXIT_CODE."
+                echo "Установка yazi из бинарника не удалась."
+                rm -f yazi.zip # Удаляем частично загруженный файл, если есть
+            elif [ ! -s yazi.zip ]; then
+                echo "Ошибка: yazi.zip был скачан, но файл пустой или содержит 0 байт."
+                echo "Установка yazi из бинарника не удалась."
+                rm -f yazi.zip
+            else
+                echo "Файл yazi.zip успешно скачан (размер: $(stat -c%s yazi.zip) байт). Распаковка..."
                 mkdir -p yazi_temp
                 unzip -q yazi.zip -d yazi_temp
                 YAZI_EXECUTABLE=$(find yazi_temp -name yazi -type f -executable)
@@ -173,9 +186,6 @@ if [ "$SNAP_YAZI_INSTALLED" = false ]; then
                     echo "Не удалось найти исполняемый файл yazi после распаковки бинарника."
                 fi
                 rm -rf yazi.zip yazi_temp
-            else
-                echo "Ошибка при загрузке yazi.zip."
-                rm -f yazi.zip
             fi
         fi
     fi
