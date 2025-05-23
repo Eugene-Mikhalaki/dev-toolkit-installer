@@ -126,8 +126,8 @@ echo "Установка yazi (файловый менеджер)..."
 
 SNAP_YAZI_INSTALLED=false
 if command -v snap &> /dev/null; then
-    echo "Команда 'snap' доступна. Проверка состояния snapd (таймаут 10 секунд)..."
-    if timeout 10 sudo snap list &> /dev/null; then
+    echo "Команда 'snap' доступна. Проверка состояния snapd (таймаут 10 секунд, SIGKILL)..."
+    if timeout --signal=SIGKILL 10 sudo snap list &> /dev/null; then
         echo "snapd активен. Попытка установки yazi через snap..."
         sudo snap install yazi --classic
         if [ $? -eq 0 ]; then
@@ -154,8 +154,10 @@ if [ "$SNAP_YAZI_INSTALLED" = false ]; then
         YAZI_LATEST_URL=$(curl -s https://api.github.com/repos/sxyazi/yazi/releases/latest | \
                            grep "browser_download_url.*yazi-x86_64-unknown-linux-gnu.zip" | \
                            cut -d : -f 2,3 | \
-                           tr -d '"' | \
+                           tr -d '\"' | \
                            head -n 1)
+        # Очищаем URL от возможных начальных/конечных пробелов
+        YAZI_LATEST_URL=$(echo "$YAZI_LATEST_URL" | xargs)
 
         if [ -z "$YAZI_LATEST_URL" ]; then
             echo "Не удалось найти URL для загрузки бинарника yazi. Установка yazi будет пропущена."
