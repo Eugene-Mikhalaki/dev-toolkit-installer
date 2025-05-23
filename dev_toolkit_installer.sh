@@ -124,31 +124,62 @@ rm lazydocker_latest_Linux_x86_64.tar.gz
 # Использование: yazi
 echo "Установка yazi (файловый менеджер)..."
 
-# snapd должен был быть установлен на предыдущем шаге 'sudo apt install ... snapd'
+SNAP_YAZI_INSTALLED=false
 if command -v snap &> /dev/null; then
-    echo "Команда 'snap' доступна. Попытка установки yazi через snap..."
-    # Иногда snap-демону нужно время или ядро должно быть обновлено для работы AppArmor/Seccomp.
-    # Простая проверка, отвечает ли демон.
+    echo "Команда 'snap' доступна. Проверка состояния snapd..."
     if sudo snap list &> /dev/null; then
+        echo "snapd активен. Попытка установки yazi через snap..."
         sudo snap install yazi --classic
-        if [ $? -ne 0 ]; then
+        if [ $? -eq 0 ]; then
+            echo "yazi успешно установлен через snap."
+            SNAP_YAZI_INSTALLED=true
+        else
             echo "Ошибка во время 'sudo snap install yazi --classic'."
             echo "Возможно, snapd требует дополнительной настройки или перезапуска системы/сервиса."
-            echo "Вы можете попробовать выполнить 'sudo systemctl restart snapd' или перезагрузить систему."
-        else
-            echo "yazi успешно установлен через snap."
         fi
     else
         echo "Ошибка: команда 'snap' доступна, но 'snap list' не работает (демон snapd может быть не активен)."
-        echo "Попробуйте активировать сервисы snapd (например, 'sudo systemctl start snapd.service snapd.socket') и запустить установку yazi вручную: sudo snap install yazi --classic"
-        echo "Установка yazi через snap будет пропущена."
     fi
 else
-    echo "Ошибка: команда 'snap' не доступна даже после попытки установки snapd пакета."
-    echo "Установка yazi через snap будет пропущена."
-    echo "Проверьте логи установки snapd и убедитесь, что snapd корректно установлен и запущен."
+    echo "Команда 'snap' не доступна."
 fi
 
+if [ "$SNAP_YAZI_INSTALLED" = false ]; then
+    echo "Установка yazi через snap не удалась или была пропущена. Попытка установки из pre-built бинарника..."
+    if ! command -v curl &> /dev/null || ! command -v wget &> /dev/null || ! command -v unzip &> /dev/null; then
+        echo "curl, wget или unzip не установлены. Невозможно скачать yazi бинарник."
+        echo "Пожалуйста, установите их: sudo apt install curl wget unzip"
+        echo "Установка yazi будет пропущена."
+    else
+        YAZI_LATEST_URL=$(curl -s https://api.github.com/repos/sxyazi/yazi/releases/latest | \
+                           grep "browser_download_url.*yazi-x86_64-unknown-linux-gnu.zip" | \
+                           cut -d : -f 2,3 | \
+                           tr -d '"' | \
+                           head -n 1)
+
+        if [ -z "$YAZI_LATEST_URL" ]; then
+            echo "Не удалось найти URL для загрузки бинарника yazi. Установка yazi будет пропущена."
+        else
+            echo "Загрузка yazi с URL: $YAZI_LATEST_URL"
+            wget -q --show-progress "$YAZI_LATEST_URL" -O yazi.zip
+            if [ $? -eq 0 ]; then
+                mkdir -p yazi_temp
+                unzip -q yazi.zip -d yazi_temp
+                YAZI_EXECUTABLE=$(find yazi_temp -name yazi -type f -executable)
+                if [ -n "$YAZI_EXECUTABLE" ]; then
+                    sudo mv "$YAZI_EXECUTABLE" /usr/local/bin/
+                    echo "yazi успешно установлен в /usr/local/bin/ из бинарника."
+                else
+                    echo "Не удалось найти исполняемый файл yazi после распаковки бинарника."
+                fi
+                rm -rf yazi.zip yazi_temp
+            else
+                echo "Ошибка при загрузке yazi.zip."
+                rm -f yazi.zip
+            fi
+        fi
+    fi
+fi
 
 echo ""
 echo "--------------------------------------------------------------------"
