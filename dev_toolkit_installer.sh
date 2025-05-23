@@ -88,7 +88,7 @@ if [[ -f ~/.p10k.zsh ]]; then
 fi
 
 # Раскомментируйте, если нужно добавить ~/.local/bin в PATH и это не делается автоматически
-# export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 EOL
 
 # Установка zsh как оболочки по умолчанию
@@ -196,12 +196,18 @@ fi
 echo ""
 echo "--------------------------------------------------------------------"
 echo "Установка завершена!"
+echo "Installation completed!"
 echo ""
 echo "Что дальше:"
+echo "What's next:"
 echo "1. Перезапустите ваш терминал или выполните 'exec zsh', чтобы изменения вступили в силу."
+echo "   (Restart your terminal or run 'exec zsh' for the changes to take effect.)"
 echo "2. При первом запуске zsh с Powerlevel10k, возможно, запустится конфигуратор 'p10k configure'."
+echo "   (On the first Zsh launch with Powerlevel10k, the 'p10k configure' wizard might start.)"
 echo "   Если нет, вы можете запустить его вручную командой: p10k configure"
+echo "   (If not, you can run it manually with the command: p10k configure)"
 echo "3. Убедитесь, что в настройках вашего терминала выбран шрифт 'MesloLGS NF' для корректного отображения."
+echo "   (Ensure that 'MesloLGS NF' font is selected in your terminal settings for correct display.)"
 echo ""
 echo "Кратко об установленных утилитах:"
 echo "  - zsh: Мощная оболочка, настроена с Oh My Zsh и темой Powerlevel10k."
