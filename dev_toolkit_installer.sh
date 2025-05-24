@@ -2,6 +2,9 @@
 # Прерывать выполнение скрипта при любой ошибке
 set -e
 
+# Устанавливаем неинтерактивный режим для debconf, чтобы избежать диалогов
+export DEBIAN_FRONTEND=noninteractive
+
 # По умолчанию НЕ обновляем систему
 PERFORM_UPDATE=false
 
@@ -25,14 +28,18 @@ shift "$((OPTIND-1))"
 # Обновление системы (если PERFORM_UPDATE=true)
 if [ "$PERFORM_UPDATE" = true ]; then
   echo "Обновление системы..."
-  sudo apt update && sudo apt upgrade -y
+  # Обновляем список пакетов перед обновлением и установкой
+  sudo apt update
+  sudo apt upgrade -y
 else
   echo "Пропуск обновления системы (для обновления используйте флаг -u)."
+  # Даже если не обновляем систему, обновить список пакетов перед установкой
+  sudo apt update
 fi
 
 # Установка необходимых пакетов
-echo "Установка базовых пакетов (zsh, git, curl, wget, fonts-powerline, unzip, snapd, htop, btop, glances, mtr-tiny, fzf)..."
-sudo apt install -y zsh git curl wget fonts-powerline unzip snapd htop btop glances mtr-tiny fzf
+echo "Установка базовых пакетов (apt-utils, zsh, git, curl, wget, fonts-powerline, unzip, snapd, htop, btop, glances, mtr-tiny, fzf)..."
+sudo apt install -y apt-utils zsh git curl wget fonts-powerline unzip snapd htop btop glances mtr-tiny fzf
 
 # Установка шрифтов Nerd Fonts (MesloLGS NF - рекомендован для Powerlevel10k)
 echo "Установка шрифтов MesloLGS Nerd Font..."
