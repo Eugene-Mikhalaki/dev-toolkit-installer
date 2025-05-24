@@ -4,22 +4,29 @@ This script automates the setup of a comprehensive toolkit for backend developer
 
 Этот скрипт автоматизирует установку полного набора инструментов для бэкенд-разработчиков и DevOps-инженеров на хост под управлением Ubuntu.
 
-## Features
+## Возможности / Features
 
-*   Installs and configures Zsh with Oh My Zsh and the Powerlevel10k theme for an enhanced terminal experience.
-*   Includes useful Zsh plugins:
-    *   `zsh-autosuggestions`: Provides command suggestions as you type.
-    *   `zsh-syntax-highlighting`: Enables syntax highlighting for commands in the terminal.
-*   Installs Nerd Fonts (MesloLGS NF) for proper Powerlevel10k rendering.
-*   Installs handy utilities:
-    *   [`bat`](https://github.com/sharkdp/bat): A `cat` clone with syntax highlighting and Git integration.
-    *   [`lazydocker`](https://github.com/jesseduffield/lazydocker): A terminal UI for Docker to manage containers and services.
-    *   [`yazi`](https://github.com/sxyazi/yazi): A fast terminal file manager with prefetching and preview capabilities.
-    *   [`htop`](https://htop.dev/): Interactive process viewer.
-    *   [`btop`](https://github.com/aristocratos/btop): Modern and feature-rich system resource monitor.
-    *   [`glances`](https://nicolargo.github.io/glances/): System-wide monitoring tool with a comprehensive overview.
-    *   [`mtr`](https://www.bitwizard.nl/mtr/): Network diagnostic tool (script installs `mtr-tiny`).
-    *   [`fzf`](https://github.com/junegunn/fzf): Command-line fuzzy finder for interactive filtering.
+Этот скрипт устанавливает и настраивает:
+(This script installs and configures:)
+
+*   **Zsh + Oh My Zsh + Powerlevel10k**: Современная и мощная оболочка с фреймворком для управления конфигурацией и красивой темой.
+    *   (Modern and powerful shell with a configuration management framework and a beautiful theme.)
+*   **Полезные плагины Zsh / Useful Zsh plugins**:
+    *   `zsh-autosuggestions`: Предлагает команды во время набора. (Suggests commands as you type.)
+    *   `zsh-syntax-highlighting`: Подсвечивает синтаксис команд. (Highlights command syntax.)
+*   **Основные утилиты командной строки / Essential command-line utilities**:
+    *   `bat`: Улучшенный `cat` с подсветкой синтаксиса. (An improved `cat` with syntax highlighting.) - [Документация](https://github.com/sharkdp/bat)
+    *   `lazydocker`: Терминальный UI для Docker. (A terminal UI for Docker.) - [Документация](https://github.com/jesseduffield/lazydocker)
+    *   `yazi`: Терминальный файловый менеджер. (A terminal file manager.) - [Документация](https://github.com/sxyazi/yazi)
+    *   `htop`: Интерактивный просмотрщик процессов. (An interactive process viewer.) - [Документация](https://htop.dev/)
+    *   `btop`: Современный просмотрщик ресурсов. (A modern resource monitor.) - [Документация](https://github.com/aristocratos/btop)
+    *   `glances`: Обзорный монитор системы. (An overview system monitor.) - [Документация](https://nicolargo.github.io/glances/)
+    *   `mtr-tiny`: Утилита для диагностики сети. (A network diagnostic tool.) - [Документация](https://www.bitwizard.nl/mtr/)
+    *   `fzf`: Нечеткий поиск для командной строки. (A command-line fuzzy finder.) - [Документация](https://github.com/junegunn/fzf)
+*   **Шрифты Nerd Fonts (MesloLGS NF)**: Для корректного отображения иконок в Powerlevel10k.
+    *   (For correct icon display in Powerlevel10k.)
+*   **Примеры использования / Usage Examples**: Подробные примеры для каждой утилиты можно найти в файле [`utility_examples.md`](./utility_examples.md).
+    *   (Detailed examples for each utility can be found in [`utility_examples.md`](./utility_examples.md).)
 *   Optionally updates the system (`sudo apt update && sudo apt upgrade -y`) if the `-u` flag is provided.
 
 ## Quick Start & Usage
@@ -86,21 +93,25 @@ Alternatively, if you prefer to download the script first:
 
 Enjoy your new development environment!
 
-## Zsh, Oh My Zsh & Powerlevel10k Setup Only
+## Установщик только для Zsh / Zsh-only Installer
 
-If you only want to set up an enhanced Zsh environment with Oh My Zsh, the Powerlevel10k theme, and useful plugins (autosuggestions, syntax highlighting) without installing all the other developer utilities, you can use a dedicated script.
+Если вам нужен только Zsh со всеми настройками, плагинами и шрифтами, но без дополнительных утилит типа `bat`, `yazi`, `lazydocker` и т.д., вы можете использовать отдельный, более легкий скрипт.
 
-Если вы хотите настроить только улучшенное окружение Zsh с Oh My Zsh, темой Powerlevel10k и полезными плагинами (автодополнения, подсветка синтаксиса) без установки всех остальных утилит для разработчиков, вы можете использовать специальный скрипт.
+(If you only need Zsh with all configurations, plugins, and fonts, but without additional utilities like `bat`, `yazi`, `lazydocker`, etc., you can use a separate, lighter script.)
 
-This script will install:
-*   Zsh (and set it as the default shell)
+**Что устанавливает / What it installs:**
+
+*   Zsh
 *   Oh My Zsh
-*   Powerlevel10k theme
-*   MesloLGS NF fonts (recommended for Powerlevel10k)
-*   `zsh-autosuggestions` plugin
-*   `zsh-syntax-highlighting` plugin
+*   Тему Powerlevel10k (и настраивает ее по умолчанию) / Powerlevel10k theme (and configures it by default)
+*   Плагины / Plugins: `zsh-autosuggestions`, `zsh-syntax-highlighting`
+*   Шрифты Powerline и MesloLGS NF / Powerline fonts and MesloLGS NF
+*   Настраивает `~/.zshrc` с плагинами и темой / Configures `~/.zshrc` with plugins and theme
+*   Устанавливает Zsh как оболочку по умолчанию / Sets Zsh as the default shell
+*   **Примеры использования / Usage Examples**: Примеры для Zsh и его плагинов также описаны в общем файле [`utility_examples.md`](./utility_examples.md).
+    *   (Examples for Zsh and its plugins are also described in the general [`utility_examples.md`](./utility_examples.md) file.)
 
-**To run the Zsh configuration installer:**
+**Как запустить / How to run:**
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Eugene-Mikhalaki/dev-toolkit-installer/main/zsh_config_installer.sh)"
